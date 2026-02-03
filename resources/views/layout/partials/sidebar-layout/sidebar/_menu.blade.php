@@ -9,38 +9,20 @@
         <div class="menu menu-column menu-rounded menu-sub-indention px-3 fw-semibold fs-6" id="#kt_app_sidebar_menu"
             data-kt-menu="true" data-kt-menu-expand="false">
 
+            <!--begin:Menu item-->
+            <div class="menu-item">
+                <!--begin:Menu link-->
+                <a class="menu-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                    href="{{ route('dashboard') }}">
+                    <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+                    <span class="menu-title">Dashboard</span>
+                </a>
+                <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+
             @if (auth()->user()->role === 'Administrator')
                 {{-- Administrator Menu --}}
-                <!--begin:Menu item-->
-                <div data-kt-menu-trigger="click"
-                    class="menu-item menu-accordion {{ request()->routeIs('dashboard') ? 'here show' : '' }}">
-                    <!--begin:Menu link-->
-                    <span class="menu-link">
-                        <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
-                        <span class="menu-title">Dashboard</span>
-                        <span class="menu-arrow"></span>
-                    </span>
-                    <!--end:Menu link-->
-                    <!--begin:Menu sub-->
-                    <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                                href="{{ route('dashboard') }}">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Admin Dashboard</span>
-                            </a>
-                            <!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item-->
-                    </div>
-                    <!--end:Menu sub-->
-                </div>
-                <!--end:Menu item-->
-
                 <!--begin:Menu item-->
                 <div class="menu-item pt-5">
                     <!--begin:Menu content-->
@@ -149,37 +131,19 @@
                     <!--end:Menu sub-->
                 </div>
                 <!--end:Menu item-->
-            @elseif(auth()->user()->role === 'Customer')
-                {{-- Customer Menu --}}
+
                 <!--begin:Menu item-->
-                <div data-kt-menu-trigger="click"
-                    class="menu-item menu-accordion {{ request()->routeIs('customer.dashboard') ? 'here show' : '' }}">
+                <div class="menu-item">
                     <!--begin:Menu link-->
-                    <span class="menu-link">
-                        <span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
-                        <span class="menu-title">Dashboard</span>
-                        <span class="menu-arrow"></span>
-                    </span>
-                    <!--end:Menu link-->
-                    <!--begin:Menu sub-->
-                    <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link {{ request()->routeIs('customer.dashboard') ? 'active' : '' }}"
-                                href="{{ route('customer.dashboard') }}">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">My Dashboard</span>
-                            </a>
-                            <!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item-->
-                    </div>
-                    <!--end:Menu sub-->
+                    <a class="menu-link {{ request()->routeIs('flipbooks.tickets.*') ? 'active' : '' }}"
+                        href="{{ route('admin.tickets.index') }}">
+                        <span class="menu-icon">{!! getIcon('support-24', 'fs-2') !!}</span>
+                        <span class="menu-title">Support Tickets</span>
+                    </a>
                 </div>
                 <!--end:Menu item-->
+            @elseif(auth()->user()->role === 'Customer')
+                {{-- Customer Menu --}}
 
                 <!--begin:Menu item-->
                 <div class="menu-item pt-5">
@@ -238,24 +202,11 @@
                 <div class="menu-item pt-5">
                     <!--begin:Menu content-->
                     <div class="menu-content">
-                        <span class="menu-heading fw-bold text-uppercase fs-7">Account</span>
+                        <span class="menu-heading fw-bold text-uppercase fs-7">Support Tickets</span>
                     </div>
                     <!--end:Menu content-->
                 </div>
                 <!--end:Menu item-->
-
-                <!--begin:Menu item - Settings-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link {{ request()->routeIs('customer.settings.*') ? 'active' : '' }}"
-                        href="{{ route('customer.settings.index') }}">
-                        <span class="menu-icon">{!! getIcon('setting-2', 'fs-2') !!}</span>
-                        <span class="menu-title">Account Settings</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
-
                 <!--begin:Menu item - Support-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
@@ -268,7 +219,6 @@
                 </div>
                 <!--end:Menu item-->
             @endif
-
         </div>
         <!--end::Menu-->
     </div>

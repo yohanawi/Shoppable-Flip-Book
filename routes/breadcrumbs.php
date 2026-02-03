@@ -63,3 +63,45 @@ Breadcrumbs::for('customer.tickets.create', function (BreadcrumbTrail $trail) {
     $trail->parent('customer.tickets.index');
     $trail->push('Create Ticket', route('customer.tickets.create'));
 });
+
+// Home > Dashboard > Tickets > [Ticket]
+Breadcrumbs::for('customer.tickets.show', function (BreadcrumbTrail $trail, $ticket) {
+    $trail->parent('customer.tickets.index');
+    $trail->push('Ticket #' . $ticket->id, route('customer.tickets.show', $ticket));
+});
+
+// Hoem > Dashboard > Tickets > Admin > Index
+Breadcrumbs::for('admin.tickets.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('All Tickets', route('admin.tickets.index'));
+});
+
+// Home > Dashboard > Tickets > Admin > [Ticket]
+Breadcrumbs::for('admin.tickets.show', function (BreadcrumbTrail $trail, $ticket) {
+    $trail->parent('admin.tickets.index');
+    $trail->push('Ticket #' . $ticket->id, route('admin.tickets.show', $ticket));
+});
+
+// Home > Dashboard > Settings
+Breadcrumbs::for('customer.settings.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Customer Settings', route('customer.settings.index'));
+});
+
+// Home > Dashboard > Catalog
+Breadcrumbs::for('customer.catalog.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('My Catalog', route('customer.catalog.index'));
+});
+
+// Home > Dashboard > Catalog > Create
+Breadcrumbs::for('customer.catalog.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('customer.catalog.index');
+    $trail->push('Create', route('customer.catalog.create'));
+});
+
+// Home > Dashboard > Catalog > Edit
+Breadcrumbs::for('customer.catalog.edit', function (BreadcrumbTrail $trail, $flipbook) {
+    $trail->parent('customer.catalog.index');
+    $trail->push('Edit', route('customer.catalog.edit', $flipbook));
+});

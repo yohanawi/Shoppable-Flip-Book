@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\SupportTicket;
+use App\Models\SupportTicketMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,11 +12,11 @@ class CustomerTicketController extends Controller
 {
     public function index()
     {
-        // Note: This is a placeholder. You'll need to create a SupportTicket model
-        // and migration for a full implementation
-        return view('customer.tickets.index', [
-            'tickets' => [] // Replace with actual ticket query when model exists
-        ]);
+        $tickets = SupportTicket::where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+        return view('customer.tickets.index', compact('tickets'));
     }
 
     public function create()
@@ -31,25 +33,45 @@ class CustomerTicketController extends Controller
             'message' => 'required|string',
         ]);
 
-        // Note: Create SupportTicket model and uncomment:
-        // SupportTicket::create([
-        //     'user_id' => Auth::id(),
-        //     'subject' => $validated['subject'],
-        //     'category' => $validated['category'],
-        //     'priority' => $validated['priority'],
-        //     'message' => $validated['message'],
-        //     'status' => 'open',
-        // ]);
+        SupportTicket::create([
+            'user_id' => Auth::id(),
+            'subject' => $validated['subject'],
+            'category' => $validated['category'],
+            'priority' => $validated['priority'],
+            'message' => $validated['message'],
+            'status' => 'open',
+        ]);
 
-        return redirect()->route('customer.tickets.index')
+        return redirect()
+            ->route('customer.tickets.index')
             ->with('success', 'Support ticket created successfully!');
     }
 
-    public function show($id)
+
+    public function show(SupportTicket $ticket)
     {
-        // Note: Replace with actual ticket query when model exists
-        return view('customer.tickets.show', [
-            'ticket' => null // Replace with actual ticket
+        abort_if($ticket->user_id !== Auth::id(), 403);
+
+        return view('customer.tickets.show', compact('ticket'));
+    }
+
+    public function reply(Request $request, SupportTicket $ticket)
+    {
+        abort_if($ticket->user_id !== Auth::id(), 403);
+
+        $request->validate([
+            'message' => 'required|string',
         ]);
+
+        SupportTicketMessage::create([
+            'support_ticket_id' => $ticket->id,
+            'user_id' => Auth::id(),
+            'is_admin' => false,
+            'message' => $request->message,
+        ]);
+
+        $ticket->update(['status' => 'open']);
+
+        return back()->with('success', 'Reply sent successfully.');
     }
 }

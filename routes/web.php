@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminTicketController;
 use App\Http\Controllers\Apps\PermissionManagementController;
 use App\Http\Controllers\Apps\RoleManagementController;
 use App\Http\Controllers\Apps\UserManagementController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\Customer\CustomerSettingsController;
+use App\Http\Controllers\Customer\CustomerTicketController;
+use App\Http\Controllers\Customer\CustomerTwoFactorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FlipbookController;
 use App\Http\Controllers\FlipbookHotspotController;
@@ -191,19 +195,32 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Account Settings
         Route::prefix('settings')->name('settings.')->group(function () {
-            Route::get('/', [\App\Http\Controllers\Customer\CustomerSettingsController::class, 'index'])->name('index');
-            Route::put('/profile', [\App\Http\Controllers\Customer\CustomerSettingsController::class, 'updateProfile'])->name('update-profile');
-            Route::put('/password', [\App\Http\Controllers\Customer\CustomerSettingsController::class, 'updatePassword'])->name('update-password');
+            Route::get('/', [CustomerSettingsController::class, 'index'])->name('index');
+            Route::put('/profile', [CustomerSettingsController::class, 'updateProfile'])->name('update-profile');
+            Route::put('/password', [CustomerSettingsController::class, 'updatePassword'])->name('update-password');
         });
 
         // Support Tickets
         Route::prefix('tickets')->name('tickets.')->group(function () {
-            Route::get('/', [\App\Http\Controllers\Customer\CustomerTicketController::class, 'index'])->name('index');
-            Route::get('/create', [\App\Http\Controllers\Customer\CustomerTicketController::class, 'create'])->name('create');
-            Route::post('/', [\App\Http\Controllers\Customer\CustomerTicketController::class, 'store'])->name('store');
-            Route::get('/{ticket}', [\App\Http\Controllers\Customer\CustomerTicketController::class, 'show'])->name('show');
+            Route::get('/', [CustomerTicketController::class, 'index'])->name('index');
+            Route::get('/create', [CustomerTicketController::class, 'create'])->name('create');
+            Route::post('/', [CustomerTicketController::class, 'store'])->name('store');
+            Route::get('/{ticket}', [CustomerTicketController::class, 'show'])->name('show');
+            Route::post('/{ticket}/reply', [CustomerTicketController::class, 'reply'])->name('reply');
         });
     });
+
+    Route::middleware(['auth', 'admin'])
+        ->prefix('admin')
+        ->name('admin.')
+        ->group(function () {
+
+            Route::prefix('tickets')->name('tickets.')->group(function () {
+                Route::get('/', [AdminTicketController::class, 'index'])->name('index');
+                Route::get('/{ticket}', [AdminTicketController::class, 'show'])->name('show');
+                Route::post('/{ticket}/reply', [AdminTicketController::class, 'reply'])->name('reply');
+            });
+        });
 });
 
 Route::get('/error', function () {

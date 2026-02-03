@@ -1,4 +1,4 @@
-<!--begin:Dashboards menu-->
+{{-- <!--begin:Dashboards menu-->
 <div class="menu-state-bg menu-extended overflow-hidden overflow-lg-visible" data-kt-menu-dismiss="true">
 	<!--begin:Row-->
 	<div class="row">
@@ -247,4 +247,4 @@
 	</div>
 	<!--end:Row-->
 </div>
-<!--end:Dashboards menu-->
+<!--end:Dashboards menu--> --}}
